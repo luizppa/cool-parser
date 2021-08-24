@@ -1,0 +1,3 @@
+#!/bin/sh
+
+./lexer $* | ./parser $* | ./semant $* | ./cgen $*

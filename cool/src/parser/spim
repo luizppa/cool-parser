@@ -1,0 +1,5 @@
+#!/bin/sh
+
+COOL_INST=$(dirname $(realpath $0))/../..
+TRAP_HANDLER=$COOL_INST/lib/trap.handler
+spim -trap_file $TRAP_HANDLER $*

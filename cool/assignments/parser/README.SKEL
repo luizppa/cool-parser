@@ -1,0 +1,137 @@
+                    Arquivo README para o Trabalho Prático 3
+================================================================================
+
+Estrutura
+---------
+
+  Considere que <cool dir> corresponde ao caminho onde está a pasta "cool" que
+  você extraiu do arquivo "tp3-4.tar.gz". Após executar o comando
+
+  > make -f <cool dir>/assignments/parser/Makefile
+
+  seu diretório deve conter os seguintes arquivos (-> corresponde a links
+  simbólicos):
+
+  Makefile                -> [cool dir]/src/parser/Makefile
+  README
+  cool.y
+  bad.cl
+  good.cl
+  cool-tree.handcode.h
+  cool-tree.cc            -> [cool dir]/src/parser/cool-tree.cc
+  cool-tree.aps           -> [cool dir]/src/parser/cool-tree.aps
+  dumptype.cc             -> [cool dir]/src/parser/dumptype.cc
+  handle_flags.c          -> [cool dir]/src/parser/handle_flags.cc
+  parser-phase.cc         -> [cool dir]/src/parser/parser-phase.cc
+  stringtab.cc            -> [cool dir]/src/parser/stringtab.cc
+  tokens-lex.cc           -> [cool dir]/src/parser/tokens-lex.cc
+  tree.cc                 -> [cool dir]/src/parser/tree.cc
+  utilities.cc            -> [cool dir]/src/parser/utilities.cc
+  *.d                     dependency files
+  *.*                     other generated files
+
+  Os arquivos de cabeçalho (.h) para este trabalho podem ser encontrados em
+  [cool dir]/include/parser.
+
+  O Makefile contém ações para compilar e executar seu programa.
+  NÃO MODIFIQUE.
+
+  O README (este arquivo) contém algumas instruções. Além disso, você encontrará
+  ao final do arquivo um espaço para que você preencha a documentação a ser
+  entregue. Você deve explicar as decisões de projeto, explicar por que seu
+  programa está correto e por que seus casos de teste são adequados. Ao final,
+  antes de gerar o arquivo de submissão, apague todo o conteúdo do arquivo README
+  que não faz parte da sua documentação (i.e. as instruções aqui presentes, acima
+  dos dizeres "corte aqui"),
+
+  cool.y contém um esqueleto inicial da especificação do parser que você irá
+  escrever. Ele já contém algumas produções para programa e classes. Use-as como
+  exemplo para escrever o restante das produções. Você deve, também, ler a
+  documentação do bison.
+
+  good.cl e bad.cl testam algumas características da gramática. Você deve
+  adicionar testes para garantir que good.cl exercite qualquer construção legal e
+  que bad.cl exercite a maior quantidade possível de erros que você consiga
+  inserir em um único arquivo.
+
+  cool-tree.aps contém as definições de árvore que você utilizará para construir
+  a árvore de sintaxe abstrata (AST). A partir deste arquivo, cool-tree.h e
+  cool-tree.cc são gerados automaticamente por um utilitário que compila a
+  especificação para funções C++, para produzir e consumir nós de árvore.
+  NÃO MODIFIQUE.
+
+  tree.{cc|h} contém definições usadas pelo pacote de árvore.
+  cool-tree.handcode.h é uma extensão de cool-tree.h escrita a mão. Se você ler
+  os arquivos cool-tree.h e cool-tree.cc, você notará que existem "hooks" para
+  estender declarações de classes. Estender e moficar o pacote de árvore é
+  discutido em "Cool Tour", mas você não precisa modificar esse
+  pacote para este trabalho.
+
+  tokens-lex.cc é um analisador léxico capaz de ler uma sequência de tokens.
+  NÃO MODIFIQUE.
+
+  parser-phase.cc contém um driver para testar o parser. NÃO MODIFIQUE.
+
+  dumptype.cc imprime a AST em um formato legível para a fase de análise
+  semântica do compilador. NÃO MODIFIQUE.
+
+  handle_flags.cc implementa rotinas para analisar opções passadas por linha de
+  comando. NÃO MODIFIQUE.
+
+  O restante dos arquivos são gerados pelo bison.
+  cool-parse.cc é o arquivo C++ gerado que contém a implementação do parser.
+
+Instruções
+----------
+
+  Para compilar seu parser, execute o seguinte comando:
+
+  > make parser
+
+  Isto irá produzer um executável chamado "parser", que corresponde somente a
+  fase de análise sintática do compilador. Para fazer qualquer coisa útil, será
+  necessário o analisador léxico (executável = lexer), semântico (executável =
+  semant) e geração de código (executável = cgen).
+
+  Para testar seu parser em um arquivo "foo.cl", execute o
+  seguinte comando:
+
+  > ./myparser foo.cl
+
+  myparser é um arquivo shell script que une os analisadores léxico e
+  sintático.
+
+  Para aplicar seu parser aos arquivos good.cl e bad.cl, execute o comando:
+
+  > make dotest
+
+  Se você acredita que seu parser está correto, você pode querer
+  rodar o compilador Cool completo. Para tanto, execute o
+  seguinte comando:
+
+  > ./mycoolc foo.cl -o foo.s
+
+  mycoolc é um arquivo shell script que une as fases de compilação (léxico,
+  sintático, semântico e geração de código). Você tem disponível
+  também o coolc, uma versão de referência do compilador de
+  Cool, caso queira utilizar:
+
+  > ./coolc foo.cl -o foo.s
+
+  E, caso queira testar o programa gerado, você pode utilizar o
+  emulador spim:
+
+  > ./spim -file foo.s
+
+  Para entregar seu trabalho, primeiro certifique-se que está tudo funcionando
+  e que você preencheu o arquivo README corretamente. Em seguida, dentro do
+  diretório do projeto, execute o seguinte comando (considerando que apenas
+  os arquivos a seguir foram modificados):
+
+  > tar -czvf tp3_seuNOME.tar.gz cool.y good.cl bad.cl README
+
+  BOA SORTE!
+
+------8<------8<------8<------8<---corte arqui---8<------8<------8<------8<-----
+
+[Aqui começa sua documentação]

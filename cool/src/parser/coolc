@@ -1,0 +1,5 @@
+#!/bin/sh
+
+ALL_INST=$(dirname $(realpath $0))/../../lib/all
+$ALL_INST/lexer $* | $ALL_INST/parser $* | \
+    $ALL_INST/semant $* | $ALL_INST/cgen $*

@@ -1,0 +1,150 @@
+                    Arquivo README para o Trabalho Prático 4
+================================================================================
+
+Estrutura
+---------
+
+  Considere que <cool dir> corresponde ao caminho onde está a pasta "cool" que
+  você extraiu do arquivo "tp3-4.tar.gz". Após executar o comando
+
+  > make -f <cool dir>/assignments/cgen/Makefile
+
+  seu diretório deve conter os seguintes arquivos (-> corresponde a links
+  simbólicos):
+
+  Makefile              -> [course dir]/assignments/PA5/Makefile
+  README
+  ast-lex.cc            -> [course dir]/src/PA5/ast-lex.cc
+  ast-parse.cc          -> [course dir]/src/PA5/ast-parse.cc
+  cgen-phase.cc         -> [course dir]/src/PA5/cgen-phase.cc
+  cgen.cc
+  cgen.h
+  cgen_supp.cc
+  cool-tree.cc          -> [course dir]/src/PA5/cool-tree.cc
+  cool-tree.handcode.h
+  dumptype.cc           -> [course dir]/src/PA5/dumptype.cc
+  emit.h
+  example.cl
+  handle_flags.cc       -> [course dir]/src/PA5/handle_flags.cc
+  mycoolc               -> [course dir]/src/PA5/mycoolc*
+  stringtab.cc          -> [course dir]/src/PA5/stringtab.cc
+  tree.cc               -> [course dir]/src/PA5/tree.cc
+  utilities.cc          -> [course dir]/src/PA5/utilities.cc
+  *.d
+
+  Os arquivos de cabeçalho (.h) para este trabalho podem ser encontrados em
+  [cool dir]/include/cgen.
+
+  O Makefile contém ações para compilar e executar seu programa.
+  NÃO MODIFIQUE.
+
+  O README (este arquivo) contém algumas instruções. Além disso, você encontrará
+  ao final do arquivo um espaço para que você preencha a documentação a ser
+  entregue. Você deve explicar as decisões de projeto, explicar por que seu
+  programa está correto e por que seus casos de teste são adequados. Ao final,
+  antes de gerar o arquivo de submissão, apague todo o conteúdo do arquivo README
+  que não faz parte da sua documentação (i.e. as instruções aqui presentes, acima
+  dos dizeres "corte aqui"),
+
+  Em example.cl você deve escrever um código Cool que esteja correto, de forma
+  a testar a maior quantidade possível de aspectos do gerador de código. E, ao
+  rodar o emulador spim com o código gerado, o programa deve executar
+  corretamente.
+
+  cgen.cc contém o esqueleto do gerador de código. Este arquivo fornece três
+  componentes do gerador:
+
+    - Funções para produzir o grafo de herança;
+
+    - Funções para emitir dados globais e constantes; e
+
+    - Funções para emitir instruções MIPS.
+
+  Você deve dar uma olhada e entender esse código; ele irá ajudá-lo a completar
+  o restante do gerador de código.
+
+
+  cgen.h é o cabeçalho do gerador de código. Fique a vontade para dicionar o
+  que achar necessário.
+
+  cgen_supp.cc é um código que serve de suporte para o gerador. Você pode
+  adicionar funções como desejar, mas NÃO MODIFIQUE as 3 funções a seguir:
+
+    - byte_mode;
+    - ascii_mode; e
+    - emit_string_constant
+
+  emit.h define uma série de macros que você pode achar úteis quando quiser
+  emitir código. Fique a vontade para modificar conforme julgar necessário.
+
+  cgen-phase.cc é o driver para o compilador. NÃO MODIFIQUE.
+
+  O script mycoolc pode passar qualquer uma das opções padrões para o gerador
+  de código; para este trabalho, para debugar o gerador de código utilize a
+  opção -c para setar a variável cgen_debug como verdadeira. Após isso, para
+  gerar alguma informação de debug útil você vai ter que implementar o código
+  de debug; para tanto, escreva-o seguindo o formato a seguir:
+
+    if (cgen_debug) {
+      ...
+    }
+
+  symtab.h contém a implementação da tabela de símbolos. Você pode modificar
+  este arquivo se desejar. Para tanto, copie o arquivo <course
+  dir>/include/cgen/symtab.h para seu diretório local.
+
+  cool.h contém definições usadas por praticamente todas as partes do
+  compilador. NÃO MODIFIQUE.
+
+  tree.h contém a classe base 'tree_node' da AST.
+
+  cool-tree.cc, cool-tree.h e cool-tree.handcode.h contém as declarações e
+  definições de geração de código da AST. Você pode adicionar campos como
+  quiser, mas NÃO MODIFIQUE nenhum método que já existe, excepto pelo método
+  'code' que você pode modificar ou remover conforme desejar. Você pode
+  modificar cool-tree.h ou cool-tree.handcode.h, mas NÃO MODIFIQUE
+  cool-tree.cc; adicionoar todas as definições de método ao arquivo cgen.cc.
+
+  stringtab.h contém funções para manipulação da tabela de strings.
+  NÃO MODIFIQUE.
+
+  dumptype.cc contém funções para imprimir a AST. NÃO MODIFIQUE.
+
+  *.d são arquivos de dependência, gerados automaticamente pelo Makefile.
+
+Instruções
+----------
+
+  Para compilar seu gerador de código, execute o seguinte comando:
+
+  > make cgen
+
+  Para testar o compilador, execute o seguinte comando:
+
+  > ./mycool.c [-o nome do arquivo de saída] <file1.cl> <file2.cl> ...
+
+  Este comando faz o parse de todos os arquivos passados por linha de comando,
+  os passa para o analisador semântico e depois roda seu gerador de código em
+  cima da AST gerada.
+
+  Para rodar seu compilador no arquivo example.cl, execute o seguinte comando:
+
+  > make dotest
+
+  Para executar o código gerado:
+
+  > ./spim -file foo.s
+
+  Para entregar seu trabalho, primeiro certifique-se que está tudo funcionando
+  e que você preencheu o arquivo README corretamente. Em seguida, dentro do
+  diretório do projeto, execute o seguinte comando, passando todos os arquivos
+  modificados (incluindo este README, com sua documentação):
+
+  > tar -czvf tp3_seuNOME.tar.gz <arquivo1> <arquivo2> ...
+
+  BOA SORTE!
+
+------8<------8<------8<------8<---corte arqui---8<------8<------8<------8<-----
+
+[Aqui começa sua documentação]
+
