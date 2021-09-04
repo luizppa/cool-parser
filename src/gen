@@ -1,3 +1,4 @@
 #!/bin/bash
 
+make clean -f ../cool/assignments/parser/Makefile || echo "Nothing to clean"
 make -f ../cool/assignments/parser/Makefile
