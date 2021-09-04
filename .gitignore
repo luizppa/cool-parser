@@ -1,0 +1,5 @@
+src/*
+!src/cool.y
+!src/good.cl
+!src/bad.cl
+!src/gen
