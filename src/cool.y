@@ -121,10 +121,28 @@ feature_list: feature_list feature { $$ = append_Features($1, single_Features($2
 feature: OBJECTID ':' TYPEID ';' { $$ = attr($1, $3, no_expr()); }
        | OBJECTID ':' TYPEID ASSIGN expression ';' { $$ = attr($1, $3, assign($1, $5)); }
 
-expression: INT_CONST { $$ = int_const($1); }
+expression:
+          /* Composite expressions */
+            '(' expression ')' { $$ = comp($2); }
+          /* From other IDs */
+          | OBJECTID { $$ = object($1); }
+          | NEW TYPEID { $$ = new_($2); }
+          /* Constants */
+          | INT_CONST { $$ = int_const($1); }
           | BOOL_CONST { $$ = bool_const($1); }
           | STR_CONST { $$ = string_const($1); }
-          | NEW TYPEID { $$ = new_($2); }
+          /* Unary operators */
+          | '~' expression { $$ = neg($2); }
+          | NOT expression { $$ = neg($2); }
+          /* Binary operators */
+          | expression '+' expression { $$ = plus($1, $3); }
+          | expression '-' expression { $$ = sub($1, $3); }
+          | expression '*' expression { $$ = mul($1, $3); }
+          | expression '/' expression { $$ = divide($1, $3); }
+          | expression '<' expression { $$ = lt($1, $3); }
+          | expression DARROW expression { $$ = leq($1, $3); }
+          | expression '=' expression { $$ = eq($1, $3); }
+
 
 /* end of grammar */
 %%
