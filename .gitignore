@@ -5,3 +5,4 @@ src/*
 !src/good.cl
 !src/bad.cl
 !src/gen
+!src/examples/

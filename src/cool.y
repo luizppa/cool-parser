@@ -78,14 +78,26 @@ int omerrs = 0;               /* number of errors in lexing and parsing */
 %type <classes> class_list
 %type <class_> class
 
-%type <expression> expression
-
-%type <features> dummy_feature_list
 %type <feature> feature
 %type <features> feature_list
 
-/* Precedence declarations go here. */
+%type <formal> formal
+%type <formals> formal_list
 
+%type <expression> expression
+%type <expressions> expression_list
+
+/* Precedence declarations go here. */
+%nonassoc '.'
+%nonassoc '@'
+%nonassoc '~'
+%nonassoc ISVOID
+%left '*' '/'
+%left '+' '-'
+%nonassoc LE '<' '='
+%nonassoc NOT
+%right ASSIGN
+/* Shouldn't ';' enter in this relation?? */
 
 %%
 /* 
@@ -111,22 +123,36 @@ class	: CLASS TYPEID '{' feature_list '}' ';'
 		{ $$ = class_($2,$4,$6,stringtable.add_string(curr_filename)); }
 	;
 
-/* Feature list may be empty, but no empty features in list. */
-dummy_feature_list:		/* empty */
-                {  $$ = nil_Features(); }
-
 feature_list: feature_list feature { $$ = append_Features($1, single_Features($2)); }
-            | dummy_feature_list { $$ = $1; }
+            | /* Empty feature list */ {  $$ = nil_Features(); }
 
 feature: OBJECTID ':' TYPEID ';' { $$ = attr($1, $3, no_expr()); }
        | OBJECTID ':' TYPEID ASSIGN expression ';' { $$ = attr($1, $3, assign($1, $5)); }
+       | OBJECTID '(' formal_list ')' ':' TYPEID '{' expression '}'
+           { $$ = method($1, $3, $6, $8); }
+
+formal: OBJECTID ':' TYPEID { $$ = formal($1, $3); }
+
+formal_list: formal { $$ = single_Formals($1); }
+           | formal_list ',' formal
+	       { $$ = append_Formals($1, single_Formals($3)); }
+           | /* Empty formal list */ { $$ = nil_Formals(); }
 
 expression:
           /* Composite expressions */
             '(' expression ')' { $$ = comp($2); }
+          | '{' expression ';' expression_list '}' /* 1 or more! */
+              { $$ = block(append_Expressions(single_Expressions($2), $4)); }
+          | IF expression THEN expression ELSE expression FI
+              { $$ = cond($2, $4, $6); }
           /* From other IDs */
           | OBJECTID { $$ = object($1); }
           | NEW TYPEID { $$ = new_($2); }
+/* | OBJECTID '(' expression_list ')' { $$ = ??; } */
+          | expression '@' TYPEID '.' OBJECTID '(' expression_list ')'
+              { $$ = static_dispatch($1, $3, $5, $7); }
+          | expression '.' OBJECTID '(' expression_list ')'
+  	      { $$ = dispatch($1, $3, $5); }
           /* Constants */
           | INT_CONST { $$ = int_const($1); }
           | BOOL_CONST { $$ = bool_const($1); }
@@ -134,15 +160,23 @@ expression:
           /* Unary operators */
           | '~' expression { $$ = neg($2); }
           | NOT expression { $$ = neg($2); }
+          | ISVOID expression { $$ = isvoid($2); }
           /* Binary operators */
           | expression '+' expression { $$ = plus($1, $3); }
           | expression '-' expression { $$ = sub($1, $3); }
           | expression '*' expression { $$ = mul($1, $3); }
           | expression '/' expression { $$ = divide($1, $3); }
           | expression '<' expression { $$ = lt($1, $3); }
-          | expression DARROW expression { $$ = leq($1, $3); }
+          | expression LE expression { $$ = leq($1, $3); }
           | expression '=' expression { $$ = eq($1, $3); }
 
+expression_list: expression { $$ = single_Expressions($1); }
+               /* Actual parameters */
+               | expression ',' expression_list
+                   { $$ = append_Expressions($3, single_Expressions($1)); }
+               | expression ';' expression_list
+                   { $$ = append_Expressions($3, single_Expressions($1)); }
+               | /* Empty expression list */ { $$ = nil_Expressions(); }
 
 /* end of grammar */
 %%
