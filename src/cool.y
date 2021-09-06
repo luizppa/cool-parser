@@ -84,8 +84,13 @@ int omerrs = 0;               /* number of errors in lexing and parsing */
 %type <formal> formal
 %type <formals> formal_list
 
+%type <expression> let
+%type <expression> let_list
 %type <expression> expression
+%type <expressions> actual_list
 %type <expressions> expression_list
+
+%type <cases> branch_list
 
 /* Precedence declarations go here. */
 %nonassoc '.'
@@ -97,6 +102,7 @@ int omerrs = 0;               /* number of errors in lexing and parsing */
 %nonassoc LE '<' '='
 %nonassoc NOT
 %right ASSIGN
+%nonassoc IN
 /* Shouldn't ';' enter in this relation?? */
 
 %%
@@ -145,13 +151,19 @@ expression:
               { $$ = block(append_Expressions(single_Expressions($2), $4)); }
           | IF expression THEN expression ELSE expression FI
               { $$ = cond($2, $4, $6); }
+          | WHILE expression LOOP expression POOL
+              { $$ = loop($2, $4); }
+          | LET let { $$ = $2; } /* let expr in expr */
+          | CASE expression OF branch_list ESAC { $$ = typcase($2, $4); }
           /* From other IDs */
+          | OBJECTID ASSIGN expression
+              { $$ = assign($1, $3); }
           | OBJECTID { $$ = object($1); }
           | NEW TYPEID { $$ = new_($2); }
-/* | OBJECTID '(' expression_list ')' { $$ = ??; } */
-          | expression '@' TYPEID '.' OBJECTID '(' expression_list ')'
+          | OBJECTID '(' actual_list ')' { $$ = dispatch(no_expr(), $1, $3); }
+          | expression '@' TYPEID '.' OBJECTID '(' actual_list ')'
               { $$ = static_dispatch($1, $3, $5, $7); }
-          | expression '.' OBJECTID '(' expression_list ')'
+          | expression '.' OBJECTID '(' actual_list ')'
   	      { $$ = dispatch($1, $3, $5); }
           /* Constants */
           | INT_CONST { $$ = int_const($1); }
@@ -170,13 +182,34 @@ expression:
           | expression LE expression { $$ = leq($1, $3); }
           | expression '=' expression { $$ = eq($1, $3); }
 
-expression_list: expression { $$ = single_Expressions($1); }
+actual_list: expression { $$ = single_Expressions($1); }
                /* Actual parameters */
                | expression ',' expression_list
                    { $$ = append_Expressions($3, single_Expressions($1)); }
+               | /* Empty expression list */ { $$ = nil_Expressions(); }
+
+expression_list: expression { $$ = single_Expressions($1); }
                | expression ';' expression_list
                    { $$ = append_Expressions($3, single_Expressions($1)); }
                | /* Empty expression list */ { $$ = nil_Expressions(); }
+
+let: OBJECTID ':' TYPEID let_list
+       { $$ = let($1, $3, no_expr(), $4); }
+   | OBJECTID ':' TYPEID ASSIGN expression let_list
+       { $$ = let($1, $3, $5, $6); }
+
+let_list:
+        /*   OBJECTID ':' TYPEID let_list */
+        /*     { $$ = let($1, $3, no_expr(), $4); } */
+        /* | OBJECTID ':' TYPEID ASSIGN expression let_list */
+        /*     { $$ = let($1, $3, $5, $6); } */
+          ',' let { $$ = $2; }
+        | IN expression { $$ = $2; }
+
+branch_list: 
+             OBJECTID ':' TYPEID DARROW expression ';' branch_list
+	     { $$ = append_Cases($7, single_Cases(branch($1, $3, $5))); }
+             | /* Empty case list */ { $$ = nil_Cases(); }
 
 /* end of grammar */
 %%

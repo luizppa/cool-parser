@@ -6,3 +6,4 @@ src/*
 !src/bad.cl
 !src/gen
 !src/examples/
+!src/runParserTests.sh

@@ -1,6 +1,6 @@
 Class A {
       myZero : Int <- 0;
-      foo() : Int { self.myZero; }
+      foo() : Int { myZero }
 };
 
 Class TestSD inherits A {
