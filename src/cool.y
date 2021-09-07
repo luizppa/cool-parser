@@ -88,6 +88,7 @@ int omerrs = 0;               /* number of errors in lexing and parsing */
 %type <expression> let_list
 %type <expression> expression
 %type <expressions> actual_list
+%type <expressions> non_empty_list
 %type <expressions> expression_list
 
 %type <cases> branch_list
@@ -182,11 +183,13 @@ expression:
           | expression LE expression { $$ = leq($1, $3); }
           | expression '=' expression { $$ = eq($1, $3); }
 
-actual_list: expression { $$ = single_Expressions($1); }
-            /* Actual parameters */
-            | expression ',' actual_list
+actual_list: non_empty_list { $$ = $1; }
+           | /* Empty expression list */ { $$ = nil_Expressions(); }
+
+non_empty_list: expression { $$ = single_Expressions($1); }
+              /* Actual parameters */
+              | expression ',' non_empty_list
                 { $$ = append_Expressions($3, single_Expressions($1)); }
-            | /* Empty expression list */ { $$ = nil_Expressions(); }
 
 expression_list: expression { $$ = single_Expressions($1); }
                | expression ';' expression_list

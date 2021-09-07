@@ -27,3 +27,18 @@ Class D inherts A {
 Class E inherits A {
 ;
 
+(* error:  misplaced comma after parameter list *)
+class F {
+  foo(param1: Int, param2: Int): String { "Hello world" };
+  bar(): String { foo(1, 2,) };
+};
+
+(* error:  double semicolom after expression *)
+class G {
+  foo(): String {
+    {
+      "Hello, world!";;
+    }
+  };
+};
+
