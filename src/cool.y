@@ -183,10 +183,10 @@ expression:
           | expression '=' expression { $$ = eq($1, $3); }
 
 actual_list: expression { $$ = single_Expressions($1); }
-               /* Actual parameters */
-               | expression ',' expression_list
-                   { $$ = append_Expressions($3, single_Expressions($1)); }
-               | /* Empty expression list */ { $$ = nil_Expressions(); }
+            /* Actual parameters */
+            | expression ',' actual_list
+                { $$ = append_Expressions($3, single_Expressions($1)); }
+            | /* Empty expression list */ { $$ = nil_Expressions(); }
 
 expression_list: expression { $$ = single_Expressions($1); }
                | expression ';' expression_list
