@@ -68,3 +68,72 @@ To run the parser over a set of test inputs execute the script located at `src/r
 ```
 $ ./src/run-test path/to/example/folder/
 ```
+
+## Examples
+
+Consider the input:
+
+```
+class A {
+  name: String <- "Jhon";
+};
+
+class BB__ inherits A {
+
+  foo(): String {
+    {
+      "Helo";
+      "World!";
+    }
+  };
+};
+```
+
+it will produce the following output:
+
+```
+#1
+_program
+  #1
+  _class
+    A
+    Object
+    "good.cl"
+    (
+    #2
+    _attr
+      name
+      String
+      #2
+      _assign
+        name
+        #2
+        _string
+          "Jhon"
+        : _no_type
+      : _no_type
+    )
+  #5
+  _class
+    BB__
+    A
+    "good.cl"
+    (
+    #7
+    _method
+      foo
+      String
+      #8
+      _block
+        #9
+        _string
+          "Helo"
+        : _no_type
+        #10
+        _string
+          "World!"
+        : _no_type
+      : _no_type
+    )
+
+```

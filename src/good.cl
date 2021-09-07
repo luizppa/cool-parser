@@ -1,8 +1,9 @@
 class A {
-  
+  name: String <- "Jhon";
 };
 
 class BB__ inherits A {
+
   foo(): String {
     {
       "Helo";
@@ -13,13 +14,14 @@ class BB__ inherits A {
 
 class BaseCounter {
   id: Int;
-  value: Int <- 0;
+  counter: Int <- 0;
+  value(): Int { counter };
 
   init(initialValue: Int): SELF_TYPE {
     {
       if (isvoid id) then {
         id <- 0;
-        value <- initialValue;
+        counter <- initialValue;
         self;
       }
       else self fi;
@@ -28,14 +30,14 @@ class BaseCounter {
 
   count_up(): SELF_TYPE {
     {
-      value <- value + 1;
+      counter <- counter + 1;
       self;
     }
   };
 
   count_down(): SELF_TYPE {
     {
-      value <- value - 1;
+      counter <- counter - 1;
       self;
     }
   };
@@ -44,14 +46,14 @@ class BaseCounter {
 class ExtendedCounter inherits BaseCounter {
   count_n_up(n: INT): SELF_TYPE {
     {
-      value <- value + n;
+      counter <- counter + n;
       self;
     }
   };
 
   count_n_down(n: INT): SELF_TYPE {
     {
-      value <- value - n;
+      counter <- counter - n;
       self;
     }
   };
@@ -64,12 +66,12 @@ class Main {
 
   init(): SELF_TYPE {
     {
-      while (advancedCounter.value < basicCounter.value) loop {
+      while ((advancedCounter).value() < (basicCounter).value()) loop {
         basicCounter.count_up();
         advancedCounter.count_n_up(3);
       } pool;
-      
-      if(advancedCounter.value == basicCounter.value) then {
+
+      if(advancedCounter.value() = basicCounter.value()) then {
         success <- true;
         self;
       } else self fi;
