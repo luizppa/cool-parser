@@ -42,17 +42,17 @@ Class Digit9 {
 Class TestCase {
       isDigit(str: String): Bool {
         case str of
-	  d0: Digit0 => true;
-	  d1: Digit1 => true;
-	  d2: Digit2 => true;
-	  d3: Digit3 => true;
-	  d4: Digit4 => true;
-	  d5: Digit5 => true;
-	  d6: Digit6 => true;
-	  d7: Digit7 => true;
-	  d8: Digit8 => true;
-	  d9: Digit9 => true;
-	  o: Object => false;
-	esac
-      }
+          d0: Digit0 => true;
+          d1: Digit1 => true;
+          d2: Digit2 => true;
+          d3: Digit3 => true;
+          d4: Digit4 => true;
+          d5: Digit5 => true;
+          d6: Digit6 => true;
+          d7: Digit7 => true;
+          d8: Digit8 => true;
+          d9: Digit9 => true;
+          o: Object => false;
+        esac
+      };
 };

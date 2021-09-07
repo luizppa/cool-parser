@@ -134,7 +134,7 @@ feature_list: feature_list feature { $$ = append_Features($1, single_Features($2
 
 feature: OBJECTID ':' TYPEID ';' { $$ = attr($1, $3, no_expr()); }
        | OBJECTID ':' TYPEID ASSIGN expression ';' { $$ = attr($1, $3, assign($1, $5)); }
-       | OBJECTID '(' formal_list ')' ':' TYPEID '{' expression '}'
+       | OBJECTID '(' formal_list ')' ':' TYPEID '{' expression '}' ';'
            { $$ = method($1, $3, $6, $8); }
 
 formal: OBJECTID ':' TYPEID { $$ = formal($1, $3); }

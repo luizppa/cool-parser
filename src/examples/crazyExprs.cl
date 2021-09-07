@@ -7,5 +7,5 @@ class TestCrazyExprs {
 			(1 + (10 / 10 * 5) - 3) * 3 + 1;
         	    }
 		    else 0 fi
-      }
+      };
 };

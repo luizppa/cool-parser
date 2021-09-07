@@ -1,14 +1,14 @@
 Class A {
       myZero : Int <- 0;
-      foo() : Int { myZero }
+      foo() : Int { myZero };
 };
 
 Class TestSD inherits A {
-       foo() : Int { 1 }
-       bar() : Int { (new TestSD)@A.foo() }
+       foo() : Int { 1 };
+       bar() : Int { (new TestSD)@A.foo() };
 };
 
 Class TestDD inherits A {
-      foo() : Int { 2 }
-      bar() : Int { self.foo() }
+      foo() : Int { 2 };
+      bar() : Int { self.foo() };
 };

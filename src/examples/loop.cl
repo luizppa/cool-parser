@@ -6,5 +6,5 @@ Class TestLoop {
 		     pool;
 		     i;
 		   }
-      }
+      };
 };
