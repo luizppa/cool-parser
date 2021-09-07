@@ -43,12 +43,12 @@ In order to build the project, you will need to have the following packages inst
 * [GNU Compiler](https://gnu.org/software/gcc/)
 * [Bison](https://gnu.org/software/bison/)
 
-As well as some x86 packages that can be installed in debian systems by running:
+as well as some x86 packages that can be installed in debian systems by running:
 
 ```
-sudo dpkg --add-architecture i386
-sudo apt-get update
-sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386
+$ sudo dpkg --add-architecture i386
+$ sudo apt-get update
+$ sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386
 ```
 
 ## Running
@@ -56,7 +56,15 @@ sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386
 To parse a Cool program, simply run:
 
 ```
-./src/myparser program.cl
+$ ./src/myparser program.cl
 ```
 
 which will output the AST on the stdout.
+
+### Testing
+
+To run the parser over a set of test inputs execute the script located at `src/run-test`. While a set of default tests is available at the `src/examples/` folder, you can run the parser over any set of .cl files by running:
+
+```
+$ ./src/run-test path/to/example/folder/
+```
