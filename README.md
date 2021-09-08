@@ -63,7 +63,7 @@ which will output the AST on the stdout.
 
 ### Testing
 
-To run the parser over a set of test inputs execute the script located at `src/run-test`. While a set of default tests is available at the `src/examples/` folder, you can run the parser over any set of .cl files by running:
+To run the parser over a set of test inputs execute the script located at `src/run-test`. A set of default tests is available at `src/examples/`. Each file tries to cover one part of cool's grammar as defined in `cool.y`. Nevertheless, you can run the parser over any set of .cl files by running:
 
 ```
 $ ./src/run-test path/to/example/folder/

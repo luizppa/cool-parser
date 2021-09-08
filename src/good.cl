@@ -1,7 +1,9 @@
+(* A class with a string attribute *)
 class A {
   name: String <- "Jhon";
 };
 
+(* Inheritance and a method feature *)
 class BB__ inherits A {
 
   foo(): String {
@@ -12,6 +14,7 @@ class BB__ inherits A {
   };
 };
 
+(* Conditionals and some operators *)
 class BaseCounter {
   id: Int;
   counter: Int <- 0;
@@ -43,6 +46,7 @@ class BaseCounter {
   };
 };
 
+(* Class extension (inheritance + new features) *)
 class ExtendedCounter inherits BaseCounter {
   count_n_up(n: INT): SELF_TYPE {
     {
@@ -59,6 +63,7 @@ class ExtendedCounter inherits BaseCounter {
   };
 };
 
+(* Class initialization, method call and loops *)
 class Main {
   basicCounter: BaseCounter <- (new BaseCounter).init(50);
   advancedCounter: ExtendedCounter <- new ExtendedCounter;
@@ -79,11 +84,13 @@ class Main {
   };
 };
 
+(* Let statement *)
 Class TestLet {
       v0: Int <- 0;
       v3: Int <- let v1: Int <- v0 + 1, v2: Int <- v0 + v1 + 1 in v0 + v1 + v2 + 1;
 };
 
+(* A bunch of operators *)
 Class OpTests {
       (* Unary *)
       isTest : Bool <- true;
@@ -101,4 +108,22 @@ Class OpTests {
       xlty : Bool <- x < y;
       yleqc : Bool <- y <= c;
       ceqb : Bool <- c = b;
+};
+
+(* Case statements *)
+Class TestCase {
+  isStrInt(): Bool {
+    let str: String in
+      case str of
+        int: Int => true;
+	o: Object => false;
+      esac
+  };
+};
+
+(* Static dispatch *)
+Class TestSD inherits TestCase {
+  foo(): Bool {
+    self@TestCase.isStrInt()
+  };
 };
