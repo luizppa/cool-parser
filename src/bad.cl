@@ -42,3 +42,18 @@ class G {
   };
 };
 
+class H {
+  missingPar(: Int {
+    0 
+  }  
+};
+
+class I {
+  0to10(): Int {
+    let i: Int <- 0 in
+      {
+        while i < 10 loop i <- i + 1 pool;
+	i
+      }
+  }
+};
