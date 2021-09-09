@@ -115,12 +115,14 @@ program	: class_list	{ @$ = @1; ast_root = program($1); }
 
 class_list
 	: class			/* single class */
-		{ $$ = single_Classes($1);
+	{ $$ = single_Classes($1);
                   parse_results = $$; }
 	| class_list class	/* several classes */
-		{ $$ = append_Classes($1,single_Classes($2)); 
+	{ $$ = append_Classes($1,single_Classes($2)); 
                   parse_results = $$; }
-	;
+        | error class
+	    { $$ = nil_Classes(); cerr << "Error in class definition\n";
+	      yyerrok; yyclearin; }
 
 /* If no parent is specified, the class inherits from the Object class. */
 class	: CLASS TYPEID '{' feature_list '}' ';'
@@ -128,7 +130,6 @@ class	: CLASS TYPEID '{' feature_list '}' ';'
 			      stringtable.add_string(curr_filename)); }
 	| CLASS TYPEID INHERITS TYPEID '{' feature_list '}' ';'
 		{ $$ = class_($2,$4,$6,stringtable.add_string(curr_filename)); }
-	;
 
 feature_list: feature_list feature { $$ = append_Features($1, single_Features($2)); }
             | /* Empty feature list */ {  $$ = nil_Features(); }
@@ -202,12 +203,11 @@ let: OBJECTID ':' TYPEID let_list
        { $$ = let($1, $3, $5, $6); }
 
 let_list:
-        /*   OBJECTID ':' TYPEID let_list */
-        /*     { $$ = let($1, $3, no_expr(), $4); } */
-        /* | OBJECTID ':' TYPEID ASSIGN expression let_list */
-        /*     { $$ = let($1, $3, $5, $6); } */
           ',' let { $$ = $2; }
         | IN expression { $$ = $2; }
+        | error let_list
+	    { $$ = no_expr(); cerr << "Error in let statement\n";
+	      yyerrok; yyclearin; }
 
 branch_list: 
              OBJECTID ':' TYPEID DARROW expression ';' branch_list
