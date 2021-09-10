@@ -94,6 +94,7 @@ int omerrs = 0;               /* number of errors in lexing and parsing */
 %type <cases> branch_list
 
 /* Precedence declarations go here. */
+%left '('
 %nonassoc '.'
 %nonassoc '@'
 %nonassoc '~'
@@ -111,7 +112,6 @@ int omerrs = 0;               /* number of errors in lexing and parsing */
    Save the root of the abstract syntax tree in a global variable.
 */
 program	: class_list	{ @$ = @1; ast_root = program($1); }
-        ;
 
 class_list
 	: class			/* single class */
@@ -148,7 +148,7 @@ formal_list: formal { $$ = single_Formals($1); }
 
 expression:
           /* Composite expressions */
-            '(' expression ')' { $$ = comp($2); }
+            '(' expression ')' %prec '(' { $$ = $2; }
           | '{' expression ';' expression_list '}' /* 1 or more! */
               { $$ = block(append_Expressions(single_Expressions($2), $4)); }
           | IF expression THEN expression ELSE expression FI
@@ -173,7 +173,7 @@ expression:
           | STR_CONST { $$ = string_const($1); }
           /* Unary operators */
           | '~' expression { $$ = neg($2); }
-          | NOT expression { $$ = neg($2); }
+          | NOT expression { $$ = comp($2); }
           | ISVOID expression { $$ = isvoid($2); }
           /* Binary operators */
           | expression '+' expression { $$ = plus($1, $3); }
